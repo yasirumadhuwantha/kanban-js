@@ -79,10 +79,12 @@
 }
 
 .taskbox .title span {
-    background-color: #e45826;
+    background-color: #002366;
     color: #ffffff;
-    padding: 10px;
-    font-size: 16px;
+    width: 12%;
+    text-align: center;
+    padding: 8px;
+    font-size: 14px;
     border-radius: 7px;
 }
 

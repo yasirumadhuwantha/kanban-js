@@ -7,99 +7,128 @@ const completed = document.querySelector(".cards.completed");
 const taskbox = [todo, pending, completed];
 
 function addTaskCard(task, index) {
-     const element = document.createElement("form");
-     element.className = "card";
-     element.draggable = true;
-     element.dataset.id = task.taskId;
-     element.innerHTML = `
-          <input value="${task.content}" type="text" name="task" autocomplete="off" disabled="disabled">
-          <div>
-               <span class="task-id">#${task.taskId}</span>
-               <span>
-                    <button class="bi bi-pencil edit" data-id="${task.taskId}"></button>
-                    <button class="bi bi-check-lg update hide" data-id="${task.taskId}" data-column="${index}"></button>
-                    <button class="bi bi-trash3 delete" data-id="${task.taskId}"></button>
-               </span>
-          </div>
-     `;
-     taskbox[index].appendChild(element);
+    const element = document.createElement("form");
+    element.className = "card";
+    element.draggable = true;
+    element.dataset.id = task.taskId;
+    element.innerHTML = `
+        <input value="${task.content}" type="text" name="task" autocomplete="off" disabled="disabled">
+        <div>
+            <span class="task-id">#${task.taskId}</span>
+            <span>
+                <button class="bi bi-pencil edit" data-id="${task.taskId}" type="button"></button>
+                <button class="bi bi-check-lg update hide" data-id="${task.taskId}" data-column="${index}" type="button"></button>
+                <button class="bi bi-trash3 delete" data-id="${task.taskId}" type="button"></button>
+            </span>
+        </div>
+    `;
+    taskbox[index].appendChild(element);
 }
 
 Kanban.getAllTasks().forEach((tasks, index) => {
-     tasks.forEach(task => {
-          addTaskCard(task, index);
-     })
+    tasks.forEach(task => {
+        addTaskCard(task, index);
+    });
 });
 
 const addForm = document.querySelectorAll(".add");
 addForm.forEach(form => {
-     form.addEventListener("submit", event => {
-          event.preventDefault();
-          if (form.task.value) {
-               const task = Kanban.insertTask(form.submit.dataset.id, form.task.value.trim());
-               addTaskCard(task, form.submit.dataset.id);
-               form.reset();
-          }
-     })
+    form.addEventListener("submit", event => {
+        event.preventDefault();
+        if (form.task.value.trim()) {
+            const columnId = form.submit.dataset.id;
+            const task = Kanban.insertTask(columnId, form.task.value.trim());
+            addTaskCard(task, columnId);
+            form.reset();
+        }
+    });
 });
 
 taskbox.forEach(column => {
-     column.addEventListener("click", event => {
-          event.preventDefault();
+    column.addEventListener("click", event => {
+        const target = event.target;
+        const formInput = target.closest(".card")?.querySelector('input[name="task"]');
+        if (!formInput) return;
 
-          const formInput = event.target.parentElement.parentElement.previousElementSibling;
+        if (target.classList.contains("edit")) {
+            event.preventDefault();
+            formInput.removeAttribute("disabled");
+            formInput.focus();
+            target.classList.add("hide");
+            target.nextElementSibling.classList.remove("hide");
+        }
 
-          if (event.target.classList.contains("edit")) {
-               formInput.removeAttribute("disabled");
-               event.target.classList.add("hide");
-               event.target.nextElementSibling.classList.remove("hide");
-          };
+        if (target.classList.contains("update")) {
+            event.preventDefault();
+            formInput.setAttribute("disabled", "disabled");
+            target.classList.add("hide");
+            target.previousElementSibling.classList.remove("hide");
 
-          if (event.target.classList.contains("update")) {
-               formInput.setAttribute("disabled", "disabled");
-               event.target.classList.add("hide");
-               event.target.previousElementSibling.classList.remove("hide");
+            const taskId = target.dataset.id;
+            const columnId = target.dataset.column;
+            const content = formInput.value.trim();
 
-               const taskId = event.target.dataset.id;
-               const columnId = event.target.dataset.column;
-               const content = formInput.value;
+            Kanban.updateTask(taskId, {
+                columnId: Number(columnId),
+                content: content
+            });
+        }
 
-               Kanban.updateTask(taskId, {
-                    columnId: columnId,
-                    content: content
-               });
-          };
+        if (target.classList.contains("delete")) {
+            event.preventDefault();
+            const card = target.closest(".card");
+            const taskId = target.dataset.id;
+            card.remove();
+            Kanban.deleteTask(taskId);
+        }
+    });
+});
 
-          if (event.target.classList.contains("delete")) {
-               formInput.parentElement.remove();
-               Kanban.deleteTask(event.target.dataset.id);
-          };
-     });
+let draggedCard = null;
 
-     column.addEventListener("dragstart", event => {
-          if (event.target.classList.contains("card")) {
-               event.target.classList.add("dragging");
-          }
-     });
+document.addEventListener("dragstart", event => {
+    const card = event.target.closest(".card");
+    if (card) {
+        draggedCard = card;
+        card.classList.add("dragging");
+    }
+});
 
-     column.addEventListener("dragover", event => {
-          if (event.target.classList.contains("card")) {
-               const card = document.querySelector(".dragging");
-               column.appendChild(card);
-          }
-     });
+document.addEventListener("dragend", event => {
+    const card = event.target.closest(".card");
+    if (card) {
+        card.classList.remove("dragging");
 
-     column.addEventListener("dragend", event => {
-          if (event.target.classList.contains("card")) {
-               event.target.classList.remove("dragging");
+        const targetColumn = card.closest(".cards");
+        if (targetColumn) {
+            const columnIndex = taskbox.indexOf(targetColumn);
+            const taskId = card.dataset.id;
+            const content = card.querySelector('input[name="task"]').value;
 
-               const taskId = event.target.dataset.id;
-               const columnId = event.target.parentElement.dataset.id;
-               const content = event.target.task.value;
-               Kanban.updateTask(taskId, {
-                    columnId: columnId,
-                    content: content
-               });
-          }
-     });
+            const updateBtn = card.querySelector(".update");
+            if (updateBtn) {
+                updateBtn.dataset.column = columnIndex;
+            }
+
+            Kanban.updateTask(taskId, {
+                columnId: columnIndex,
+                content: content
+            });
+        }
+        draggedCard = null;
+    }
+});
+
+taskbox.forEach(column => {
+    column.addEventListener("dragover", event => {
+        event.preventDefault();
+
+        if (draggedCard && !column.contains(draggedCard)) {
+            column.appendChild(draggedCard);
+        }
+    });
+
+    column.addEventListener("drop", event => {
+        event.preventDefault();
+    });
 });

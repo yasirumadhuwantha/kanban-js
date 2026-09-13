@@ -3,6 +3,7 @@
 
 :root {
     --box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * {
@@ -68,7 +69,12 @@
     margin: 10px;
     display: flex;
     flex-direction: column;
-    /* min-height: 450px; */
+    transition: var(--transition);
+}
+
+.taskbox:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
 }
 
 .taskbox .title {
@@ -86,6 +92,12 @@
     padding: 8px;
     font-size: 14px;
     border-radius: 7px;
+    transition: var(--transition);
+}
+
+.taskbox .title span:hover {
+    background-color: #001a4d;
+    transform: scale(1.05);
 }
 
 .cards {
@@ -94,12 +106,16 @@
     min-height: 35px;
     display: flex;
     flex-direction: column;
+    gap: 8px;
 }
 
 .cards.drag-hover {
     min-height: 80px;
     background-color: rgba(0, 0, 0, 0.05);
-    border: 2px dashed #a0aec0;
+    border: 2px dashed #3b82f6;
+    border-radius: 8px;
+    padding: 10px;
+    transition: var(--transition);
 }
 
 .card {
@@ -110,10 +126,22 @@
     padding: 10px;
     border-radius: 10px;
     cursor: grab;
+    transition: var(--transition);
+    box-shadow: var(--box-shadow);
 }
 
 .card * {
     pointer-events: none;
+}
+
+.card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    border-color: #3b82f6;
+    transform: translateY(-2px);
+}
+
+.card:active {
+    cursor: grabbing;
 }
 
 .card button,
@@ -127,7 +155,14 @@
     padding: 10px;
     border-radius: 5px;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    border: 0px;
+    border: 1px solid transparent;
+    transition: var(--transition);
+}
+
+.card input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .card div {
@@ -146,6 +181,13 @@
     padding: 5px;
     color: #ffffff;
     border-radius: 5px;
+    transition: var(--transition);
+    flex-shrink: 0;
+}
+
+.card div span.task-id:hover {
+    background-color: #001a4d;
+    transform: scale(1.08);
 }
 
 .card button {
@@ -157,6 +199,16 @@
     margin-left: 1px;
     border: 0px;
     box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+    transition: var(--transition);
+}
+
+.card button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card button:active {
+    transform: scale(0.95);
 }
 
 .add input,
@@ -170,22 +222,38 @@
     background-color: #646464;
 }
 
+.card .edit:hover {
+    background-color: #4b4b4b;
+}
+
 .card .update {
     background-color: #005ed8;
+}
+
+.card .update:hover {
+    background-color: #0047a3;
 }
 
 .card .delete {
     background-color: #e20000;
 }
 
+.card .delete:hover {
+    background-color: #b20000;
+}
+
 .card.dragging {
     opacity: 0.4;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    transform: scale(1.02);
 }
 
 .add {
     display: flex;
     margin-top: auto; /* Pins the add form to the bottom */
     margin: 0px 5px;
+    gap: 8px;
+    margin-top: 10px;
 }
 
 .add input {
@@ -195,6 +263,15 @@
     border: 0px;
     box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
     font-size: 16px;
+    background-color: #f3f4f6;
+    transition: var(--transition);
+}
+
+.add input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .add button {
@@ -208,6 +285,23 @@
     cursor: pointer;
     margin-left: 4px;
     align-self: center;
+    transition: var(--transition);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.add button:hover {
+    background-color: #3d8a68;
+    transform: scale(1.08);
+    box-shadow: 0 6px 16px rgba(80, 178, 134, 0.3);
+}
+
+.add button:active {
+    transform: scale(0.95);
 }
 
 @media (max-width: 1080px) {

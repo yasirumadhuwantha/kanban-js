@@ -192,6 +192,11 @@
     font-size: 14px;
     line-height: 1.4;
     overflow-wrap: break-word;
+    overflow: hidden;
+    resize: none;
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
 }
 
 .card textarea:focus {

@@ -6,13 +6,19 @@ const completed = document.querySelector(".cards.completed");
 
 const taskbox = [todo, pending, completed];
 
+// Automatically adjusts textarea height based on content
+function autoResize(textarea) {
+    textarea.style.height = "auto";
+    textarea.style.height = `${textarea.scrollHeight}px`;
+}
+
 function addTaskCard(task, index) {
     const element = document.createElement("form");
     element.className = "card";
     element.draggable = true;
     element.dataset.id = task.taskId;
     element.innerHTML = `
-        <textarea name="task" rows="2" disabled="disabled">${task.content}</textarea>
+        <textarea name="task" rows="1" disabled="disabled">${task.content}</textarea>
         <div>
             <span class="task-id">#${task.taskId}</span>
             <span>
@@ -23,6 +29,14 @@ function addTaskCard(task, index) {
         </div>
     `;
     taskbox[index].appendChild(element);
+
+    const textarea = element.querySelector('textarea[name="task"]');
+    
+    // Resize on initial render
+    autoResize(textarea);
+
+    // Resize dynamically as the user types while editing
+    textarea.addEventListener("input", () => autoResize(textarea));
 }
 
 Kanban.getAllTasks().forEach((tasks, index) => {
@@ -54,6 +68,7 @@ taskbox.forEach(column => {
             event.preventDefault();
             formInput.removeAttribute("disabled");
             formInput.focus();
+            autoResize(formInput);
             target.classList.add("hide");
             target.nextElementSibling.classList.remove("hide");
         }
@@ -72,6 +87,8 @@ taskbox.forEach(column => {
                 columnId: Number(columnId),
                 content: content
             });
+            
+            autoResize(formInput);
         }
 
         if (target.classList.contains("delete")) {

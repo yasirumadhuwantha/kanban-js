@@ -12,7 +12,7 @@ function addTaskCard(task, index) {
     element.draggable = true;
     element.dataset.id = task.taskId;
     element.innerHTML = `
-        <input value="${task.content}" type="text" name="task" autocomplete="off" disabled="disabled">
+        <textarea name="task" rows="2" disabled="disabled">${task.content}</textarea>
         <div>
             <span class="task-id">#${task.taskId}</span>
             <span>
@@ -47,7 +47,7 @@ addForm.forEach(form => {
 taskbox.forEach(column => {
     column.addEventListener("click", event => {
         const target = event.target;
-        const formInput = target.closest(".card")?.querySelector('input[name="task"]');
+        const formInput = target.closest(".card")?.querySelector('[name="task"]');
         if (!formInput) return;
 
         if (target.classList.contains("edit")) {
@@ -103,7 +103,7 @@ document.addEventListener("dragend", event => {
         if (targetColumn) {
             const columnIndex = taskbox.indexOf(targetColumn);
             const taskId = card.dataset.id;
-            const content = card.querySelector('input[name="task"]').value;
+            const content = card.querySelector('[name="task"]').value;
 
             const updateBtn = card.querySelector(".update");
             if (updateBtn) {

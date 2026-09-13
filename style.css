@@ -390,8 +390,25 @@
 
 /* Mobile Screens */
 @media (max-width: 600px) {
+    html, body {
+        overflow-x: hidden;
+        width: 100%;
+    }
+
     .outer-wrap {
-        padding: 24px 24px;
+        padding: 24px 16px;
+        box-sizing: border-box;
+    }
+
+    .inner-wrap {
+        width: 100%;
+    }
+
+    .kanban {
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        width: 100%;
     }
 
     .heading {
@@ -407,11 +424,12 @@
     }
 
     .taskbox {
-        width: 100%;
-        min-width: 100%;
-        min-width: unset;
-        margin: 0;
-        padding: 12px;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        padding: 14px;
+        box-sizing: border-box;
     }
 
     .taskbox .title span {
@@ -421,20 +439,40 @@
     }
 
     .card {
-        padding: 10px 8px;
+        padding: 10px 10px;
+        box-sizing: border-box;
     }
 
     .card input,
-    .add input {
+    .card textarea {
         font-size: 14px;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .card button {
         padding: 6px 10px;
     }
 
+    .add {
+        display: flex;
+        width: 100%;
+        margin: 10px 0 0 0;
+        gap: 8px;
+        box-sizing: border-box;
+    }
+
+    .add input {
+        min-width: 0;
+        flex: 1 1 auto;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+
     .add button {
         width: 36px;
         height: 36px;
+        flex-shrink: 0;
+        margin: 0;
     }
 }

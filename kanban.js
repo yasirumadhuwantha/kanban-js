@@ -1,3 +1,6 @@
+// =============================================================================
+// Kanban Class
+// =============================================================================
 export default class Kanban {
   static getTasks(columnId) {
     const data = read().find((column) => {
@@ -26,44 +29,44 @@ export default class Kanban {
   }
 
   static updateTask(taskId, updatedInformation) {
-     const data = read();
+    const data = read();
 
-     function findColumnTask() {
-          for (const column of data) {
-               const task = column.tasks.find(item => {
-                    return item.taskId == taskId;
-               });
+    function findColumnTask() {
+      for (const column of data) {
+        const task = column.tasks.find((item) => {
+          return item.taskId == taskId;
+        });
 
-               if (task) {
-                    return [task, column];
-               }    
-          }
-     }
-     const [task, currentColumn] = findColumnTask();
+        if (task) {
+          return [task, column];
+        }
+      }
+    }
+    const [task, currentColumn] = findColumnTask();
 
-     const targetColumn = data.find(column => {
-          return column.columnId == updatedInformation.columnId;
-     })
+    const targetColumn = data.find((column) => {
+      return column.columnId == updatedInformation.columnId;
+    });
 
-     task.content = updatedInformation.content;
-     currentColumn.tasks.splice(currentColumn.tasks.indexOf(task), 1);
-     targetColumn.tasks.push(task);
+    task.content = updatedInformation.content;
+    currentColumn.tasks.splice(currentColumn.tasks.indexOf(task), 1);
+    targetColumn.tasks.push(task);
 
-     save(data);
+    save(data);
   }
 
   static deleteTask(taskId) {
     const data = read();
 
     for (const column of data) {
-      const task = column.tasks.find(item => {
-          return item.taskId == taskId;
+      const task = column.tasks.find((item) => {
+        return item.taskId == taskId;
       });
 
       if (task) {
-          column.tasks.splice(column.tasks.indexOf(task), 1)
+        column.tasks.splice(column.tasks.indexOf(task), 1);
       }
-    };
+    }
     save(data);
   }
 
@@ -74,6 +77,9 @@ export default class Kanban {
   }
 }
 
+// =============================================================================
+// Storage Helpers
+// =============================================================================
 function read() {
   const data = localStorage.getItem("data");
 
@@ -89,23 +95,29 @@ function read() {
 }
 
 function save(data) {
-     localStorage.setItem("data", JSON.stringify(data));
-     columnCount();
+  localStorage.setItem("data", JSON.stringify(data));
+  columnCount();
 }
 
+// =============================================================================
+// Counter Sync
+// =============================================================================
 function columnCount() {
-     const data = read();
+  const data = read();
 
-     const todo = document.querySelector("span.todo");
-     todo.textContent = data[0].tasks.length;
+  const todo = document.querySelector("span.todo");
+  todo.textContent = data[0].tasks.length;
 
-     const pending = document.querySelector("span.pending");
-     pending.textContent = data[1].tasks.length;
+  const pending = document.querySelector("span.pending");
+  pending.textContent = data[1].tasks.length;
 
-     const completed = document.querySelector("span.completed");
-     completed.textContent = data[2].tasks.length;
+  const completed = document.querySelector("span.completed");
+  completed.textContent = data[2].tasks.length;
 }
 
+// =============================================================================
+// Debugging / Test Calls
+// =============================================================================
 // console.log(Kanban.getAllTasks());
 // console.log(Kanban.getTasks(0));
 
@@ -113,6 +125,6 @@ function columnCount() {
 // Kanban.deleteTask(11822);
 
 // Kanban.updateTask(97522, {
-//      columnId: 0,
-//      content: "Record JavaScript Preview"
+//   columnId: 0,
+//   content: "Record JavaScript Preview"
 // });

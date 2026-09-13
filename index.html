@@ -2,12 +2,14 @@
 <html lang="en">
 
 <head>
+    <!-- Metadata -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>qNotion - Web Based Kanban Style Application To Handle Project Progress</title>
 
-    <link rel="icon" type="image/x-icon" href="./images/favicon.svg">
+    <!-- External Assets & Styles -->
+    <link rel="icon" type="image/x-icon" href="./images/favicon2.svg">
     <link rel="stylesheet" href="./style.css">
 </head>
 
@@ -15,52 +17,79 @@
     <main>
         <div class="outer-wrap">
             <div class="inner-wrap">
+
+                <!-- Header / App Title Section -->
                 <section class="heading">
                     <p class="title">qNotion</p>
                     <p class="subtitle">Web Based Kanban Style Application To Handle Project Progress</p>
                 </section>
+                <!-- /Header -->
+
+                <!-- Kanban Board -->
                 <section class="kanban">
+
+                    <!-- Column: To Do -->
                     <div class="taskbox">
+                        <!-- Column Header -->
                         <div class="title">
                             <p>TODO</p>
                             <span class="todo">2</span>
                         </div>
+                        <!-- Card Container -->
                         <div class="cards todo" data-id="0">
                         </div>
+                        <!-- Add Task Form -->
                         <form class="add">
                             <input type="text" name="task" placeholder="New Task" autocomplete="off" maxlength="30">
                             <button class="bi bi-plus" data-id="0" name="submit"></button>
                         </form>
                     </div>
+                    <!-- /Column: To Do -->
+
+                    <!-- Column: In Progress -->
                     <div class="taskbox">
+                        <!-- Column Header -->
                         <div class="title">
                             <p>IN PROGRESS</p>
                             <span class="pending">1</span>
                         </div>
+                        <!-- Card Container -->
                         <div class="cards pending" data-id="1">
                         </div>
+                        <!-- Add Task Form -->
                         <form class="add">
                             <input type="text" name="task" placeholder="New Task" autocomplete="off" maxlength="30">
                             <button class="bi bi-plus" data-id="1" name="submit"></button>
                         </form>
                     </div>
+                    <!-- /Column: In Progress -->
+
+                    <!-- Column: Completed -->
                     <div class="taskbox">
+                        <!-- Column Header -->
                         <div class="title">
                             <p>COMPLETED</p>
                             <span class="completed">2</span>
                         </div>
+                        <!-- Card Container -->
                         <div class="cards completed" data-id="2">
                         </div>
+                        <!-- Add Task Form -->
                         <form class="add">
                             <input type="text" name="task" placeholder="New Task" autocomplete="off" maxlength="30">
                             <button class="bi bi-plus" data-id="2" name="submit"></button>
                         </form>
                     </div>
+                    <!-- /Column: Completed -->
+
                 </section>
+                <!-- /Kanban Board -->
+
             </div>
         </div>
     </main>
 
+    <!-- Application Logic -->
     <script type="module" src="./index.js"></script>
 </body>
 

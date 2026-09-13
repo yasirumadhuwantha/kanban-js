@@ -1,3 +1,6 @@
+// =============================================================================
+// Module Imports & DOM References
+// =============================================================================
 import Kanban from "./kanban.js";
 
 const todo = document.querySelector(".cards.todo");
@@ -6,7 +9,9 @@ const completed = document.querySelector(".cards.completed");
 
 const taskbox = [todo, pending, completed];
 
-// Automatically adjusts textarea height based on content
+// =============================================================================
+// Helper Functions
+// =============================================================================
 function autoResize(textarea) {
     textarea.style.height = "auto";
     textarea.style.height = `${textarea.scrollHeight}px`;
@@ -32,32 +37,40 @@ function addTaskCard(task, index) {
 
     const textarea = element.querySelector('textarea[name="task"]');
     
-    // Resize on initial render
     autoResize(textarea);
-
-    // Resize dynamically as the user types while editing
     textarea.addEventListener("input", () => autoResize(textarea));
 }
 
+// =============================================================================
+// Initial Board Render
+// =============================================================================
 Kanban.getAllTasks().forEach((tasks, index) => {
     tasks.forEach(task => {
         addTaskCard(task, index);
     });
 });
 
+// =============================================================================
+// Add Task Form Handler
+// =============================================================================
 const addForm = document.querySelectorAll(".add");
 addForm.forEach(form => {
     form.addEventListener("submit", event => {
         event.preventDefault();
-        if (form.task.value.trim()) {
+        const value = form.task.value.trim();
+
+        if (value) {
             const columnId = form.submit.dataset.id;
-            const task = Kanban.insertTask(columnId, form.task.value.trim());
+            const task = Kanban.insertTask(columnId, value);
             addTaskCard(task, columnId);
             form.reset();
         }
     });
 });
 
+// =============================================================================
+// Task Actions (Edit / Update / Delete)
+// =============================================================================
 taskbox.forEach(column => {
     column.addEventListener("click", event => {
         const target = event.target;
@@ -101,6 +114,9 @@ taskbox.forEach(column => {
     });
 });
 
+// =============================================================================
+// Drag and Drop
+// =============================================================================
 let draggedCard = null;
 
 document.addEventListener("dragstart", event => {

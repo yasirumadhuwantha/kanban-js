@@ -1,11 +1,22 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto&display=swap');
+/* ==========================================================================
+   1. Imports & Fonts
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css");
 
+
+/* ==========================================================================
+   2. Design Tokens / CSS Variables
+   ========================================================================== */
 :root {
     --box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+
+/* ==========================================================================
+   3. Global Reset & Base Styles
+   ========================================================================== */
 * {
     margin: 0;
     padding: 0;
@@ -18,31 +29,38 @@
     caret-color: transparent;
 }
 
-/* Enable text selection for headings and column titles */
+/* Text selection and cursor overrides */
 .heading .title,
 .heading .subtitle,
 .taskbox .title {
     user-select: text;
-    -webkit-user-select: text; /* Safari/iOS support */
+    -webkit-user-select: text;
     cursor: text;
 }
+
+.add input,
 .card input:not([disabled]),
 .card textarea:not([disabled]) {
     pointer-events: auto !important;
     user-select: text !important;
     -webkit-user-select: text !important;
-    caret-color: #ffffff !important; /* Makes the typing cursor visible */
+    caret-color: #ffffff !important;
     cursor: text !important;
 }
 
+/* Utility classes */
 .hide {
     display: none;
 }
 
+
+/* ==========================================================================
+   4. Page Layout & Background
+   ========================================================================== */
 .outer-wrap {
     width: 100%;
     min-height: 100vh;
-    background-color: #1e2638; /* Lighter deep-slate base */
+    background-color: #1e2638;
     background-image: 
         radial-gradient(at 10% 15%, rgba(96, 165, 250, 0.28) 0px, transparent 55%),
         radial-gradient(at 85% 55%, rgba(192, 132, 252, 0.25) 0px, transparent 55%),
@@ -56,24 +74,30 @@
     margin: auto;
 }
 
+
+/* ==========================================================================
+   5. Header Section
+   ========================================================================== */
 .heading {
     margin-bottom: 30px;
+    text-align: center;
+    color: #ffffff;
 }
 
 .heading .title {
     font-size: 30px;
-    color: #ffffff;
     font-weight: 500;
-    text-align: center;
 }
 
 .heading .subtitle {
     font-size: 20px;
-    color: #ffffff;
     font-weight: 300;
-    text-align: center;
 }
 
+
+/* ==========================================================================
+   6. Kanban Board & Columns (Taskbox)
+   ========================================================================== */
 .kanban {
     display: flex;
     justify-content: space-evenly;
@@ -107,7 +131,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 5px 5px;
+    padding: 5px;
 }
 
 .taskbox .title span {
@@ -126,6 +150,10 @@
     transform: scale(1.05);
 }
 
+
+/* ==========================================================================
+   7. Card Drop Zone & Drag-and-Drop States
+   ========================================================================== */
 .cards {
     padding: 10px 5px;
     flex-grow: 1;
@@ -144,16 +172,26 @@
     transition: var(--transition);
 }
 
+.card.dragging {
+    opacity: 0.4;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    transform: scale(1.02);
+}
+
+
+/* ==========================================================================
+   8. Task Card Component
+   ========================================================================== */
 .card {
     background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
     border: 1px solid rgba(255, 255, 255, 0.18);
-    border-top: 1px solid rgba(255, 255, 255, 0.35); /* Bright liquid rim */
+    border-top: 1px solid rgba(255, 255, 255, 0.35);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
                 inset 0 1px 1px rgba(255, 255, 255, 0.2);
     border-radius: 14px;
-    margin: 10px 0px;
+    margin: 10px 0;
     padding: 12px;
     display: flex;
     flex-direction: column;
@@ -182,21 +220,19 @@
     pointer-events: auto;
 }
 
+/* Card Inputs & Editable Fields */
 .card textarea {
     width: 100%;
     color: #ffffff;
     background: transparent;
     border: 1px solid transparent;
-    resize: none;
     font-family: inherit;
     font-size: 14px;
     line-height: 1.4;
     overflow-wrap: break-word;
     overflow: hidden;
     resize: none;
-    box-sizing: border-box;
     display: block;
-    width: 100%;
 }
 
 .card textarea:focus {
@@ -207,7 +243,6 @@
     background-color: transparent;
     color: #ffffff;
     font-weight: 400;
-    box-shadow: none;
     border: 1px solid transparent;
 }
 
@@ -217,6 +252,7 @@
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
+/* Card Footer & Meta Info */
 .card div {
     display: flex;
     justify-content: space-between;
@@ -224,7 +260,7 @@
 
 .card div span {
     font-size: 12px;
-    padding: 5px 0px;
+    padding: 5px 0;
     align-self: center;
 }
 
@@ -242,6 +278,7 @@
     transform: scale(1.08);
 }
 
+/* Card Actions / Buttons */
 .card button {
     color: #ffffff;
     font-size: 14px;
@@ -249,7 +286,7 @@
     border-radius: 5px;
     cursor: pointer;
     margin-left: 1px;
-    border: 0px;
+    border: none;
     box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
     transition: var(--transition);
 }
@@ -261,13 +298,6 @@
 
 .card button:active {
     transform: scale(0.95);
-}
-
-.add input,
-.card input:not([disabled]) {
-    user-select: text;
-    caret-color: auto;
-    cursor: text;
 }
 
 .card .edit {
@@ -295,20 +325,17 @@
     background-color: #b20000;
 }
 
-.card.dragging {
-    opacity: 0.4;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
-    transform: scale(1.02);
-}
 
+/* ==========================================================================
+   9. Add Task Form
+   ========================================================================= */
 .add {
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     padding-top: 12px;
     display: flex;
-    margin-top: auto; /* Pins the add form to the bottom */
-    margin: 0px 5px;
+    margin: 10px 5px 0 5px;
+    margin-top: auto;
     gap: 8px;
-    margin-top: 10px;
 }
 
 .add input {
@@ -342,7 +369,7 @@
     color: #ffffff;
     font-size: 20px;
     padding: 10px;
-    border: 0px;
+    border: none;
     border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
     cursor: pointer;
@@ -359,7 +386,6 @@
 
 .add button:hover {
     background: rgba(16, 185, 129, 0.4);
-    color: #ffffff;
     border-color: rgba(16, 185, 129, 0.8);
     box-shadow: 0 0 14px rgba(16, 185, 129, 0.35);
 }
@@ -367,6 +393,11 @@
 .add button:active {
     transform: scale(0.95);
 }
+
+
+/* ==========================================================================
+   10. Responsive Breakpoints
+   ========================================================================== */
 
 /* Tablet & Medium Screens */
 @media (max-width: 1080px) {
@@ -397,7 +428,6 @@
 
     .outer-wrap {
         padding: 24px 16px;
-        box-sizing: border-box;
     }
 
     .inner-wrap {
@@ -429,7 +459,6 @@
         min-width: 0 !important;
         margin: 0 !important;
         padding: 14px;
-        box-sizing: border-box;
     }
 
     .taskbox .title span {
@@ -439,15 +468,13 @@
     }
 
     .card {
-        padding: 10px 10px;
-        box-sizing: border-box;
+        padding: 10px;
     }
 
     .card input,
     .card textarea {
         font-size: 14px;
         width: 100%;
-        box-sizing: border-box;
     }
 
     .card button {
@@ -455,24 +482,19 @@
     }
 
     .add {
-        display: flex;
         width: 100%;
         margin: 10px 0 0 0;
-        gap: 8px;
-        box-sizing: border-box;
     }
 
     .add input {
         min-width: 0;
         flex: 1 1 auto;
         font-size: 14px;
-        box-sizing: border-box;
     }
 
     .add button {
         width: 36px;
         height: 36px;
-        flex-shrink: 0;
         margin: 0;
     }
 }

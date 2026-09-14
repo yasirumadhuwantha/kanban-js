@@ -39,6 +39,37 @@ function addTaskCard(task, index) {
     
     autoResize(textarea);
     textarea.addEventListener("input", () => autoResize(textarea));
+
+    textarea.addEventListener("keydown", (event) => {
+        if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
+            event.preventDefault();
+            const updateBtn = element.querySelector(".update");
+            const columnId = updateBtn ? updateBtn.dataset.column : index;
+            commitTaskUpdate(element, columnId);
+        }
+    });
+}
+
+// =============================================================================
+// Helper: Commit Task Update
+// =============================================================================
+function commitTaskUpdate(card, columnId) {
+    const formInput = card.querySelector('[name="task"]');
+    const updateBtn = card.querySelector(".update");
+    const editBtn = card.querySelector(".edit");
+    const taskId = card.dataset.id;
+    const content = formInput.value.trim();
+
+    formInput.setAttribute("disabled", "disabled");
+    if (updateBtn) updateBtn.classList.add("hide");
+    if (editBtn) editBtn.classList.remove("hide");
+
+    Kanban.updateTask(taskId, {
+        columnId: Number(columnId),
+        content: content
+    });
+
+    autoResize(formInput);
 }
 
 // =============================================================================

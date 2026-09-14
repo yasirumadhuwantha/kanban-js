@@ -340,6 +340,8 @@
 
 .add input {
     flex-grow: 1;
+    flex-shrink: 1;
+    min-width: 0;
     padding: 10px;
     border-radius: 5px;
     font-size: 16px;
@@ -368,7 +370,7 @@
     background-color: #50b286;
     color: #ffffff;
     font-size: 20px;
-    padding: 10px;
+    padding: 6px;  /* Changed from 10px to 8px */
     border: none;
     border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;

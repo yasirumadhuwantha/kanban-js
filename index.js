@@ -81,6 +81,8 @@ taskbox.forEach(column => {
             event.preventDefault();
             formInput.removeAttribute("disabled");
             formInput.focus();
+            const textLength = formInput.value.length;
+            formInput.setSelectionRange(textLength, textLength);
             autoResize(formInput);
             target.classList.add("hide");
             target.nextElementSibling.classList.remove("hide");
